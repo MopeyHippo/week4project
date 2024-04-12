@@ -1,6 +1,6 @@
 import express from "express";
 const app = express();
-const bodyParser = require('body-parser');
+const bodyParser = import('body-parser');
 const port = 8080;
 
 app.use(bodyParser.json());
