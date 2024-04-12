@@ -1,25 +1,15 @@
-import express from "express";
-import bodyParser from "body-parser"
+import express, { response } from "express";
 import Database  from 'better-sqlite3'; // Import Database class from better-sqlite3
 import cors from "cors"
 
-const app = express()
+const app = express();
 app.use(express());
 app.use(cors());
-const port = 8080;
-
-
+const PORT = 8080;
 
 const db = new Database('guestbook.db'); // Initialize SQLite database
 
-
-db.prepare(`CREATE TABLE IF NOT EXISTS messages (
-    id INTEGER PRIMARY KEY,
-    text TEXT
-)`).run();
-
-
-app.use(bodyParser.json());
+app.use(express.json());
 
 
 app.post('/api/messages', async (req, res) => {
@@ -39,8 +29,9 @@ app.post('/api/messages', async (req, res) => {
 });
 
 app.get('/api/messages', async (req, res) => {
-    try {
-        const messages = await Message.find();
+  try {
+    const query = db.prepare(`SELECT * FROM messages`);
+    const messages = query.all();
         res.json(messages);
     } catch (error) {
         console.error('Error fetching messages:', error);
@@ -48,5 +39,5 @@ app.get('/api/messages', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
