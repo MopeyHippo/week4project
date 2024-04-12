@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser"
 const app = express();
 const bodyParser = import('body-parser');
 const port = 8080;
