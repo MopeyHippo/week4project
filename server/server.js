@@ -3,7 +3,7 @@ import Database  from 'better-sqlite3'; // Import Database class from better-sql
 import cors from "cors"
 
 const app = express();
-app.use(express());
+
 app.use(cors());
 const PORT = 8080;
 
@@ -12,31 +12,32 @@ const db = new Database('guestbook.db'); // Initialize SQLite database
 app.use(express.json());
 
 
-app.post('/api/messages', async (req, res) => {
-    const { text } = req.body;
-    if (!text) {
-        return res.status(400).json({ error: 'Message text is required' });
-    }
+app.post('/api/messages', (req, res) => {
+  const { text } = req.body;
+  console.log(text)
+  if (!text) {
+      return res.status(400).json({ error: 'Message text is required' });
+  }
 
-    try {
-        const newMessage = new Message({ text });
-        await newMessage.save();
-        res.status(201).json(newMessage);
-    } catch (error) {
-        console.error('Error saving message:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+  try {
+      const stmt = db.prepare('INSERT INTO messages (text) VALUES (?)');
+      stmt.run(text);
+      // const newMessage = { id: info.lastInsertRowid, text };
+      res.status(201).json("success");
+  } catch (error) {
+      console.error('Error saving message:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
-app.get('/api/messages', async (req, res) => {
+app.get('/api/messages', (req, res) => {
   try {
-    const query = db.prepare(`SELECT * FROM messages`);
-    const messages = query.all();
-        res.json(messages);
-    } catch (error) {
-        console.error('Error fetching messages:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+      const query = db.prepare('SELECT * FROM messages').all();
+      res.json(query);
+  } catch (error) {
+      console.error('Error fetching messages:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 

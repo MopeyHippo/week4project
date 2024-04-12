@@ -20,25 +20,30 @@
     }
   }
 
-  async function handleSubmit(event) {
+async function handleSubmit(event) {
     event.preventDefault();
     const text = messageInput.value.trim();
     if (text === "") return;
+console.log(text)
     try {
-      await fetch("http://localhost:8080/api/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text }),
-      });
-      messageInput.value = "";
-      await fetchAndDisplayMessages();
+        const response = await fetch("http://localhost:8080/api/messages", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text }),
+        });
+
+        if (!response.ok) {
+            throw new Error("HTTP error!");
+        }
+
+        messageInput.value = "";
+        await fetchAndDisplayMessages();
     } catch (error) {
-      console.error("Error submitting message:", error);
+        console.error("Error submitting message:", error);
     }
-  }
-;
+}
 
 messageForm.addEventListener("submit", handleSubmit);
 
