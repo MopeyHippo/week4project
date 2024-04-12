@@ -1,25 +1,29 @@
-const mongoose = require('mongoose');
-const Message = require('./models/message');
+import { Database } from 'better-sqlite3'; // Import Database class from better-sqlite3
+import Message from './models/message.js';
 
 
-mongoose.connect('mongodb://localhost:27017/guestbook', { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
+const db = new Database('guestbook.db'); // Initialize SQLite database
 
-db.once('open', async () => {
-    console.log('Connected to MongoDB');
+db.exec(`
+    CREATE TABLE IF NOT EXISTS messages (
+        id INTEGER PRIMARY KEY,
+        text TEXT
+    )
+`);
 
 
-    const messages = [
-        { text: "Hello there!" },
-        { text: "This is a test message." }
-    ];
+const messages = [
+    { text: "Hello there!" },
+    { text: "This is a test message." }
+];
 
-    try {
-        await Message.insertMany(messages);
-        console.log('Seed data inserted successfully');
-        process.exit(0);
-    } catch (error) {
-        console.error('Error seeding data:', error);
-        process.exit(1);
-    }
-});
+const insertMessage = db.prepare(`INSERT INTO messages (text) VALUES (?)`);
+
+try {
+    messages.forEach(({ text }) => {
+        insertMessage.run(text);
+    });
+    console.log('Seed data inserted successfully');
+} catch (error) {
+    console.error('Error seeding data:', error);
+}
