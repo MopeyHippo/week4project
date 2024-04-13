@@ -6,7 +6,7 @@
   async function fetchAndDisplayMessages() {
     messageList.innerHTML = "";
     try {
-      const response = await fetch("http://localhost:8080/api/messages");
+      const response = await fetch("https://week4pleaserwork.onrender.com/api/messages");
       const messages = await response.json();
       console.log (messages)
       messages.forEach((message) => {
@@ -26,7 +26,7 @@ async function handleSubmit(event) {
     if (text === "") return;
 console.log(text)
     try {
-        const response = await fetch("http://localhost:8080/api/messages", {
+        const response = await fetch("https://week4pleaserwork.onrender.com/api/messages", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
