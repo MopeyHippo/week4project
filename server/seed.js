@@ -1,8 +1,8 @@
-import  Database  from 'better-sqlite3'; // Import Database class from better-sqlite3
+import  Database  from 'better-sqlite3'; 
 
 
 
-const db = new Database('guestbook.db'); // Initialize SQLite database
+const db = new Database('guestbook.db'); 
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS messages (

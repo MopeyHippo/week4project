@@ -1,5 +1,5 @@
 import express, { response } from "express";
-import Database  from 'better-sqlite3'; // Import Database class from better-sqlite3
+import Database  from 'better-sqlite3'; 
 import cors from "cors"
 
 const app = express();
@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 const PORT = 8080;
 
-const db = new Database('guestbook.db'); // Initialize SQLite database
+const db = new Database('guestbook.db'); 
 
 app.use(express.json());
 
@@ -22,7 +22,7 @@ app.post('/api/messages', (req, res) => {
   try {
       const stmt = db.prepare('INSERT INTO messages (text) VALUES (?)');
       stmt.run(text);
-      // const newMessage = { id: info.lastInsertRowid, text };
+    
       res.status(201).json("success");
   } catch (error) {
       console.error('Error saving message:', error);
