@@ -16,6 +16,6 @@ db.exec(`
 
 const insertMessage = db.prepare(`INSERT INTO messages (text) VALUES (?)`);
 
-insertMessage.run(" This is my first test message")
-insertMessage.run(" message attempt #2")
+insertMessage.run(" Sometimes I blame my farts on the dog")
+insertMessage.run(" I eat my kids Easter eggs and blame it on the elf on the shelf ")
 

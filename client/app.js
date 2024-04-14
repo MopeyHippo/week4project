@@ -49,4 +49,10 @@ console.log(text)
 
 messageForm.addEventListener("submit", handleSubmit);
 
+messageInput.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        handleSubmit(event);
+    }
+});
+
 fetchAndDisplayMessages();
